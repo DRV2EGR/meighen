@@ -13,3 +13,22 @@ services:
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
     restart: always
+
+  zookeeper:
+    image: 'wurstmeister/zookeeper:latest'
+    container_name: zookeeper
+
+  kafka:
+    image: "wurstmeister/kafka"
+    container_name: kafka
+    ports:
+     - "9092:9092"
+    hostname: kafka
+    depends_on:
+      - zookeeper
+    # links: 
+    #  - zookeeper
+    environment:
+     - KAFKA_ADVERTISED_HOST_NAME=kafka
+     - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+     - KAFKA_ADVERTISED_PORT=9092
