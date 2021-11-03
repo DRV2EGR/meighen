@@ -1,6 +1,20 @@
 version: '3.7'
 
-services:        
+services:     
+  app-presenter:
+    build:
+      context: app-presenter #
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on: 
+      - db 
+    # environment: 
+    #   SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/polls?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    #   SPRING_DATASOURCE_USERNAME: callicoder
+    #   SPRING_DATASOURCE_PASSWORD: callicoder 
+
   db:
     image: 'postgres:13.1-alpine'
     container_name: db
