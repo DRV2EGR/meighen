@@ -40,6 +40,8 @@ services:
         REACT_APP_API_BASE_URL: http://app-presenter:8080/api
     ports:
       - "80:80"
+    # volumes:
+    #   - "./frontend-main:/usr/src/app1"
     restart: always
     depends_on:
       - app-presenter
