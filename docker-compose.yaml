@@ -16,6 +16,22 @@ services:
       SPRING_DATASOURCE_USERNAME: $DB_USER
       SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD 
 
+  app-committer:
+    build:
+      context: app-committer #
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8080"
+    restart: always
+    depends_on: 
+      - db 
+      - kafka
+      - app-presenter
+    environment: 
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/
+      SPRING_DATASOURCE_USERNAME: $DB_USER
+      SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD 
+
   frontend-main:
     build:
       context: frontend-main
@@ -23,7 +39,7 @@ services:
       args:
         REACT_APP_API_BASE_URL: http://app-presenter:8080/api
     ports:
-      - "9090:80"
+      - "80:80"
     restart: always
     depends_on:
       - app-presenter
