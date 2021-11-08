@@ -39,6 +39,4 @@ public class UploadController {
         return ResponseEntity.ok().build();
     }
 
-
-
 }
