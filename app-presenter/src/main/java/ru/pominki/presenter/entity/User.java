@@ -67,6 +67,13 @@ public class User extends BaseEntity{
     protected String activationCode;
 
     /**
+     * The Role.
+     */
+    @ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id")
+    protected Role role;
+
+    /**
      * The Time of account creation.
      */
     @Column(name = "time_of_account_creation")
