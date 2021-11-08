@@ -24,6 +24,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import org.springframework.web.multipart.MultipartFile;
+import ru.pominki.presenter.model.CommitModel;
 //import com.spring.service.GoogleDriveService;
 
 
@@ -75,7 +76,7 @@ public class GoogleDriveServiceImp implements FilesUploader {
         return convFile;
     }
 
-    public File upLoadFile(String fileName, MultipartFile filePath, String mimeType) {
+    public File upLoadFile(String fileName, MultipartFile filePath, String mimeType, CommitModel commitModel) {
         File file = new File();
         try {
             String fn = filePath.getOriginalFilename();
@@ -83,7 +84,7 @@ public class GoogleDriveServiceImp implements FilesUploader {
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setMimeType(mimeType);
             fileMetadata.setName(fn);
-            fileMetadata.setParents(Collections.singletonList(folderID));
+            fileMetadata.setParents(Collections.singletonList(commitModel.getFolderId()));
             com.google.api.client.http.FileContent fileContent = new FileContent(mimeType, fileUpload);
             file = getDriveService().files().create(fileMetadata, fileContent)
                     .setFields("id,webContentLink,webViewLink").execute();
@@ -94,29 +95,35 @@ public class GoogleDriveServiceImp implements FilesUploader {
         return file;
     }
 
-    public boolean createFolder() {
+    public CommitModel createFolder() {
+        CommitModel cm = new CommitModel();
         try {
             String uuid = UUID.randomUUID().toString();
+            cm.setCommitId(uuid);
+
             File fileMetadata = new File();
             fileMetadata.setName("coomit-"+uuid);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
             fileMetadata.setParents(Collections.singletonList("1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB"));
+
             File file = getDriveService().files().create(fileMetadata)
                     .setFields("id, name")
                     .execute();
+
             System.out.println("Folder ID: " + file.getId());
+            cm.setFolderId(file.getId());
+
+            return cm;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-
-        return true;
     }
 
     @Override
-    public boolean upload(MultipartFile file) {
+    public boolean upload(MultipartFile file, CommitModel commitModel) {
         try {
-            upLoadFile(file.getName(), file, file.getContentType());
+            upLoadFile(file.getName(), file, file.getContentType(), commitModel);
         } catch (Exception e) {
             // pass;
             return false;

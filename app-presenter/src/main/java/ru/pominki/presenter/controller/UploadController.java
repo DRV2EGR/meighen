@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.pominki.presenter.model.CommitModel;
 import ru.pominki.presenter.service.Storage.FilesUploader;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,19 +26,17 @@ public class UploadController {
     @Autowired
     FilesUploader driveService;
 
-    @PostMapping(value = "/upload_to_drive", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity uploadFile(@RequestParam List<MultipartFile> files) throws IOException {
-
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity uploadFile(@RequestParam Long repo,
+                                     @RequestParam List<MultipartFile> files ) throws IOException {
+        CommitModel commit = driveService.createFolder();
 //        driveService = new PCloudDriveService();
         for (MultipartFile file : files) {
             //file.getName(), file, file.getContentType()
-//            Boolean file2 = driveService.upload(file);
-            driveService.createFolder();
+            Boolean file2 = driveService.upload(file, commit);
         }
 
         return ResponseEntity.ok().build();
     }
-
-
 
 }

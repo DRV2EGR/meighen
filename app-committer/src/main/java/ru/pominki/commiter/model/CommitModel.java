@@ -1,4 +1,4 @@
-package ru.pominki.presenter.model;
+package ru.pominki.commiter.model;
 
 import lombok.Data;
 
