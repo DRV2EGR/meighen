@@ -1,0 +1,6 @@
+#google drive api
+google :
+  service_account_email : drive-user@pominki.iam.gserviceaccount.com
+  application_name : Pominki
+  folder_id : 1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB
+  service_account_key : pominki-7f83b314eb27.p12
