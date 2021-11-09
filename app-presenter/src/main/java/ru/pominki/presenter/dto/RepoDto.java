@@ -1,27 +1,23 @@
-package ru.pominki.presenter.entity;
+package ru.pominki.presenter.dto;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.pominki.presenter.model.CommitModel;
+import ru.pominki.presenter.entity.Commit;
+import ru.pominki.presenter.entity.User;
 
-@Entity
-@Table(name = "repositories")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Repository extends BaseEntity {
-    protected Long owner;
-
+public class RepoDto {
+    protected Long ID;
     protected String name;
     protected LocalDateTime timeOfRepoCreation;
-
-    protected String folderId;
 
     @OneToOne
     protected Commit HEAD;
@@ -30,7 +26,5 @@ public class Repository extends BaseEntity {
     protected List<Commit> commits;
 
     @OneToMany
-    protected List<User> collaborators;
-
-    protected boolean valid;
+    protected List<UserDto> collaborators;
 }

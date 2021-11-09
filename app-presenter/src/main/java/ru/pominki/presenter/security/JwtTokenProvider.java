@@ -76,6 +76,7 @@ public class JwtTokenProvider {
      */
     public String createAccessToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getUsername());
+        System.out.println(user);
         claims.put("role", user.getRole().getName());
 
         Date now = new Date();

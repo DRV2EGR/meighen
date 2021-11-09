@@ -36,7 +36,7 @@ public class UploadController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam Long repo, @RequestParam String message,
                                      @RequestParam List<MultipartFile> files ) throws IOException {
-        CommitModel commit = driveService.createFolder();
+        CommitModel commit = driveService.createCommitFolder();
         commit.setMesssage(message);
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();

@@ -7,6 +7,7 @@ import ru.pominki.presenter.model.CommitModel;
 
 public interface FilesUploader {
 
+    public String createRepositoryFolder(String name);
     public boolean upload(MultipartFile file, CommitModel commitModel);
-    public CommitModel createFolder() throws IOException;
+    public CommitModel createCommitFolder() throws IOException;
 }

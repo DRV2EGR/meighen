@@ -16,6 +16,7 @@ import ru.pominki.presenter.entity.User;
 import ru.pominki.presenter.exception.NotFoundException;
 import ru.pominki.presenter.exception.UserNotFoundExeption;
 import ru.pominki.presenter.payload.BasicPayload;
+import ru.pominki.presenter.payload.UserDtoPayload;
 import ru.pominki.presenter.repository.RoleRepository;
 import ru.pominki.presenter.repository.UserRepository;
 
@@ -184,5 +185,22 @@ public class UserService {
         userDto.setPhoneNumber(user.getPhoneNumber());
 
         return userDto;
+    }
+
+    public UserDto registerNewUser(UserDtoPayload userDtoPayload) {
+        User user = createNewUserAndFillBasicFields(userDtoPayload);
+
+        user.setRole(roleRepository.findById(1L).get());
+        String encodedPassword = bCryptPasswordEncoder.encode(userDtoPayload.getPassword());
+        user.setPassword(encodedPassword);
+
+        user.setActivationCode(UUID.randomUUID().toString());
+        user.setTimeOfAccountCreation(LocalDateTime.now());
+
+//        mailService.send(user.getEmail(), "Активация аккаунта.", mailService.completeRegistrationEmail(user.getSecondName(),
+//                user.getLastName(), user.getActivationCode()));
+
+        userRepository.save(user);
+        return convertUserToUserDto(user);
     }
 }

@@ -16,7 +16,9 @@ RUN chmod +x mvnw
 # Build all the dependencies in preparation to go offline. 
 # This is a separate step so the dependencies will be cached unless 
 # the pom.xml file has changed.
+RUN ./mvnw clean
 RUN ./mvnw dependency:go-offline -B
+RUN rm -rf /app/lib/servlet-api-2.5-20081211.jar
 
 # Copy the project source
 COPY src src

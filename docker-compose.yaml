@@ -13,9 +13,11 @@ services:
       - kafka
     environment: 
       KAFKA_URL: kafka
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/
-      SPRING_DATASOURCE_USERNAME: $DB_USER
-      SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD 
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USERNAME: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
 
   app-committer:
     build:
@@ -30,9 +32,11 @@ services:
       - app-presenter
     environment: 
       KAFKA_URL: kafka
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/
-      SPRING_DATASOURCE_USERNAME: $DB_USER
-      SPRING_DATASOURCE_PASSWORD: $DB_PASSWORD 
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: postgres
+      DB_USERNAME: $DB_USER
+      DB_PASSWORD: $DB_PASSWORD
 
   frontend-main:
     build:
