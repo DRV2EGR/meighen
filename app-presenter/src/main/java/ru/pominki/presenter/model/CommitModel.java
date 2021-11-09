@@ -6,6 +6,6 @@ import lombok.Data;
 public class CommitModel {
     protected String commitId;
     protected String folderId;
-
+    protected String messsage;
 
 }
