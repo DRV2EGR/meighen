@@ -15,6 +15,7 @@ import ru.pominki.presenter.entity.User;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RepoDto {
+    protected Long ID;
     protected String name;
     protected LocalDateTime timeOfRepoCreation;
 

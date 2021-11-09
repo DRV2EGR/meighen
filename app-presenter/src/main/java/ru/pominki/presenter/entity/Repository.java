@@ -31,4 +31,6 @@ public class Repository extends BaseEntity {
 
     @OneToMany
     protected List<User> collaborators;
+
+    protected boolean valid;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import ru.pominki.presenter.exception.NotFoundException;
 import ru.pominki.presenter.exception.UserNotFoundExeption;
 import ru.pominki.presenter.model.KafkaMsg;
 import ru.pominki.presenter.payload.CreateRepoPayload;
+import ru.pominki.presenter.repository.RepositoryRepository;
 import ru.pominki.presenter.service.ClassCastToDto;
 import ru.pominki.presenter.service.ProducerService;
 import ru.pominki.presenter.service.Storage.FilesUploader;
@@ -37,6 +39,9 @@ public class RepositoryPrivateController {
 
     @Autowired
     FilesUploader filesUploader;
+
+    @Autowired
+    RepositoryRepository repositoryRepository;
 
     private User getAuthentificatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,10 +87,13 @@ public class RepositoryPrivateController {
 
             if (!f) { throw new NotFoundException("Repo not found!"); }
 
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            String json = ow.writeValueAsString(repoId);
-            System.out.println(json);
-            producerService.produceDeleteRepo(new KafkaMsg(json));
+//            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//            String json = ow.writeValueAsString(repoId);
+//            System.out.println(json);
+            String jsonString = new JSONObject()
+                    .put("repoId", repoId.toString())
+                    .toString();
+            producerService.produceDeleteRepo(new KafkaMsg(jsonString));
 
             return ResponseEntity.ok("OK");
         } catch (Exception e) {
@@ -101,5 +109,10 @@ public class RepositoryPrivateController {
             list.add(classCastToDto.convertRepoToRepoDto(r));
         }
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/check_name")
+    public ResponseEntity<?> checkforName(@RequestParam String name) {
+        return ResponseEntity.ok(!(repositoryRepository.countAllByName(name) > 0));
     }
 }

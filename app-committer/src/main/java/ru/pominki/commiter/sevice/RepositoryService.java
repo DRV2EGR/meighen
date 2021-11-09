@@ -3,6 +3,7 @@ package ru.pominki.commiter.sevice;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pominki.commiter.entity.Repository;
@@ -27,6 +28,7 @@ public class RepositoryService {
             repository.setName(name);
             repository.setOwner(owner);
             repository.setFolderId(folderId);
+            repository.setValid(true);
             repository.setTimeOfRepoCreation(LocalDateTime.now());
             repository.setCollaborators(new ArrayList<>());
             repository.setCommits(new ArrayList<>());
@@ -39,5 +41,11 @@ public class RepositoryService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void deleteRepo(long repoId) {
+        Repository r = repositoryRepository.findById(repoId).get(); //TODO:
+        r.setValid(false);
+        repositoryRepository.save(r);
     }
 }

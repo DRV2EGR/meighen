@@ -15,6 +15,7 @@ public class ClassCastToDto {
 
     public RepoDto convertRepoToRepoDto(Repository repository) {
         RepoDto repoDto = new RepoDto(
+                repository.getId(),
                 repository.getName(),
                 repository.getTimeOfRepoCreation(),
                 repository.getHEAD(),

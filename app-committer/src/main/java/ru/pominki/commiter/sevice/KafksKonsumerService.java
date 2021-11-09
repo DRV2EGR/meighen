@@ -46,4 +46,15 @@ public class KafksKonsumerService {
             e.printStackTrace();
         }
     }
+
+    @KafkaListener(topics = "delete_repos", groupId = "message_group_id")
+    public void deleteRepo(KafkaMsg message) {
+        try {
+            System.out.println(message.getBody());
+            final JSONObject obj = new JSONObject(message.getBody());
+            repositoryService.deleteRepo(obj.getLong("repoId"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
