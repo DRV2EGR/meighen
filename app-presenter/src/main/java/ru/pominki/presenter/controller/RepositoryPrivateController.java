@@ -19,6 +19,7 @@ import ru.pominki.presenter.model.KafkaMsg;
 import ru.pominki.presenter.payload.CreateRepoPayload;
 import ru.pominki.presenter.service.ClassCastToDto;
 import ru.pominki.presenter.service.ProducerService;
+import ru.pominki.presenter.service.Storage.FilesUploader;
 import ru.pominki.presenter.service.UserService;
 
 @RestController
@@ -33,6 +34,9 @@ public class RepositoryPrivateController {
 
     @Autowired
     ClassCastToDto classCastToDto;
+
+    @Autowired
+    FilesUploader filesUploader;
 
     private User getAuthentificatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,6 +53,8 @@ public class RepositoryPrivateController {
         try {
             User u = getAuthentificatedUser();
             createRepoPayload.setOwner(u.getId());
+
+            createRepoPayload.setFolderId(filesUploader.createRepositoryFolder(createRepoPayload.getName()));
 
             ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
             String json = ow.writeValueAsString(createRepoPayload);

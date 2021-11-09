@@ -95,7 +95,7 @@ public class GoogleDriveServiceImp implements FilesUploader {
         return file;
     }
 
-    public CommitModel createFolder() {
+    public CommitModel createCommitFolder() {
         CommitModel cm = new CommitModel();
         try {
             String uuid = UUID.randomUUID().toString();
@@ -129,5 +129,28 @@ public class GoogleDriveServiceImp implements FilesUploader {
             return false;
         }
         return true;
+    }
+
+    public String createRepositoryFolder(String name){
+        try {
+            String uuid = UUID.randomUUID().toString();
+            String rn = "repository-"+name+"-"+uuid;
+
+            File fileMetadata = new File();
+            fileMetadata.setName(rn);
+            fileMetadata.setMimeType("application/vnd.google-apps.folder");
+            fileMetadata.setParents(Collections.singletonList("1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB"));
+
+            File file = getDriveService().files().create(fileMetadata)
+                    .setFields("id, name")
+                    .execute();
+
+//            System.out.println("Folder ID: " + file.getId());
+
+            return file.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

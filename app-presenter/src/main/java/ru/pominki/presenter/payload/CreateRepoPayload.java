@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class CreateRepoPayload {
     protected String name;
     protected Long owner;
+    protected String folderId;
 }

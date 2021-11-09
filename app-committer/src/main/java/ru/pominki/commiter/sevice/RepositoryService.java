@@ -18,7 +18,7 @@ public class RepositoryService {
     @Autowired
     UserRepository userRepository;
 
-    public boolean createRepo(String name, Long owner) {
+    public boolean createRepo(String name, Long owner, String folderId) {
         try {
             Repository repository = new Repository();
             User u = userRepository.getById(owner);
@@ -26,6 +26,7 @@ public class RepositoryService {
 
             repository.setName(name);
             repository.setOwner(owner);
+            repository.setFolderId(folderId);
             repository.setTimeOfRepoCreation(LocalDateTime.now());
             repository.setCollaborators(new ArrayList<>());
             repository.setCommits(new ArrayList<>());

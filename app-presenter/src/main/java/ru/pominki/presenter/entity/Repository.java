@@ -21,7 +21,7 @@ public class Repository extends BaseEntity {
     protected String name;
     protected LocalDateTime timeOfRepoCreation;
 
-    protected String folserId;
+    protected String folderId;
 
     @OneToOne
     protected Commit HEAD;

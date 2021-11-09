@@ -40,7 +40,7 @@ public class KafksKonsumerService {
 //            System.out.println(map.get("owner").toString());
             final JSONObject obj = new JSONObject(message.getBody());
 
-            repositoryService.createRepo(obj.getString("name"), obj.getLong("owner"));
+            repositoryService.createRepo(obj.getString("name"), obj.getLong("owner"), obj.getString("folderId"));
 
         } catch (Exception e) {
             e.printStackTrace();
