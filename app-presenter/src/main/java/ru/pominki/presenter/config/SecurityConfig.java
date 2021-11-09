@@ -18,11 +18,13 @@ import ru.pominki.presenter.security.JwtTokenProvider;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // AUTH ENDPOINTS
-    private static final String AUTH_ENDPOINT = "/v1/api/auth/**";
-    private static final String SIGNUP_ENDPOINT = "/v1/api/signup/**";
+    private static final String AUTH_ENDPOINT = "/api/auth/**";
+    private static final String SIGNUP_ENDPOINT = "/api/signup/**";
 
-    private static final String PUBLIC_USERS_ENDPOINT = "/v1/api/user/public/**";
-    private static final String PRIVATE_USERS_ENDPOINT = "/v1/api/user/private/**";
+    private static final String PUBLIC_USERS_ENDPOINT = "/api/user/public/**";
+    private static final String PRIVATE_USERS_ENDPOINT = "/api/user/private/**";
+
+    private static final String PRIVATE_REPOSITORYES_ENDPOINT = "/api/private/repos/**";
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -56,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(SIGNUP_ENDPOINT).permitAll()
                     .antMatchers(PRIVATE_USERS_ENDPOINT).hasAnyRole("USER", "ADMIN")
                 .antMatchers("/**").permitAll()
+                .antMatchers(PRIVATE_REPOSITORYES_ENDPOINT).hasAnyRole("USER", "ADMIN")
 
 
                     .anyRequest().authenticated()

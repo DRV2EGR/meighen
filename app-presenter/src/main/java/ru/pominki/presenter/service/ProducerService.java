@@ -14,4 +14,12 @@ public class ProducerService {
         System.out.println("Producing the message: " + message);
         kafkaTemplate.send("messages", message);
     }
+
+    public void produce_create_repo(KafkaMsg message) {
+        kafkaTemplate.send("create_repos", message);
+    }
+
+    public void produceDeleteRepo(KafkaMsg message) {
+        kafkaTemplate.send("delete_repos", message);
+    }
 }
