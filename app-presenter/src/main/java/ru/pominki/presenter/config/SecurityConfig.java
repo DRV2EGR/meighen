@@ -57,10 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(AUTH_ENDPOINT).permitAll()
                     .antMatchers(SIGNUP_ENDPOINT).permitAll()
                     .antMatchers(PRIVATE_USERS_ENDPOINT).hasAnyRole("USER", "ADMIN")
-                .antMatchers("/**").permitAll()
-                .antMatchers(PRIVATE_REPOSITORYES_ENDPOINT).hasAnyRole("USER", "ADMIN")
-
-
+                    .antMatchers(PRIVATE_REPOSITORYES_ENDPOINT).hasAnyRole("USER", "ADMIN")
                     .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
