@@ -17,11 +17,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.gruzoff.dto.JwtAuthDto;
-import ru.gruzoff.entity.RefreshToken;
-import ru.gruzoff.entity.User;
-import ru.gruzoff.repository.RefreshTokenRepository;
-import ru.gruzoff.service.UserService;
+import ru.pominki.presenter.dto.JwtAuthDto;
+import ru.pominki.presenter.entity.RefreshToken;
+import ru.pominki.presenter.entity.User;
+import ru.pominki.presenter.repository.RefreshTokenRepository;
+import ru.pominki.presenter.service.UserService;
 
 /**
  * The type Jwt token provider.

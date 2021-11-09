@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.gruzoff.entity.User;
-import ru.gruzoff.service.UserService;
+import ru.pominki.presenter.entity.User;
+import ru.pominki.presenter.service.UserService;
 
 /**
  * The type Jwt user details service.
