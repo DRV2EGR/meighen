@@ -14,11 +14,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Repository extends BaseEntity {
-    @ManyToOne
-    protected User owner;
+    protected Long owner;
 
     protected String name;
     protected LocalDateTime timeOfRepoCreation;
+
+    protected String folserId;
 
     @OneToOne
     protected Commit HEAD;
