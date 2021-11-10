@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./main_page/MainPage";
 import ErrorPage from "./ErrorPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from "./login_component/Login";
+import SignUP from "./login_component/SignUP";
 
 class App extends Component {
     render()
@@ -32,8 +34,11 @@ class App extends Component {
         <Router>
             <Routes>
                 <Route exact path="/" element={<MainPage/>} />
-                {/*<Route exact path="/login" element={<Login/>}/>*/}
-                {/*<Route exact path="/recovery-password" element={<RecoveryPassword/>}/>*/}
+
+                <Route exact path={'/login'} element={<Login/>}/>
+                <Route exact path={'/signup'} element={<SignUP/>}/>
+
+
                 <Route path="*"  element={<ErrorPage code={404} description={'Страница не найдена.'}/>} />
             </Routes>
         </Router>
