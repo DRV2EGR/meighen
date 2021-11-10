@@ -20,7 +20,8 @@ import ru.pominki.presenter.model.KafkaMsg;
 import ru.pominki.presenter.payload.CreateRepoPayload;
 import ru.pominki.presenter.repository.RepositoryRepository;
 import ru.pominki.presenter.service.ClassCastToDto;
-import ru.pominki.presenter.service.ProducerService;
+import ru.pominki.presenter.service.producer.BranchProducerService;
+import ru.pominki.presenter.service.producer.ProducerService;
 import ru.pominki.presenter.service.Storage.FilesUploader;
 import ru.pominki.presenter.service.UserService;
 
@@ -42,6 +43,9 @@ public class RepositoryPrivateController {
 
     @Autowired
     RepositoryRepository repositoryRepository;
+
+    @Autowired
+    BranchProducerService branchProducerService;
 
     private User getAuthentificatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
