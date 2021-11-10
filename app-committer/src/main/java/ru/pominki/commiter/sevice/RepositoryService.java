@@ -19,6 +19,9 @@ public class RepositoryService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BranchService branchService;
+
     public boolean createRepo(String name, Long owner, String folderId) {
         try {
             Repository repository = new Repository();
@@ -31,11 +34,13 @@ public class RepositoryService {
             repository.setValid(true);
             repository.setTimeOfRepoCreation(LocalDateTime.now());
             repository.setCollaborators(new ArrayList<>());
-            repository.setCommits(new ArrayList<>());
-
+            repository.setBranches(new ArrayList<>());
             repositoryRepository.save(repository);
             u.getRepositories().add(repository);
             userRepository.save(u);
+
+
+            branchService.createBranch("main", owner, repository.getId());
             return true;
         } catch (Exception e) {
             e.printStackTrace();

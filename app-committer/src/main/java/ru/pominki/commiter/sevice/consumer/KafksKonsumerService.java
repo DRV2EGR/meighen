@@ -1,4 +1,4 @@
-package ru.pominki.commiter.sevice;
+package ru.pominki.commiter.sevice.consumer;
 
 import java.util.Map;
 
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import ru.pominki.commiter.model.KafkaMsg;
+import ru.pominki.commiter.sevice.RepositoryService;
 
 @Service
 public class KafksKonsumerService {

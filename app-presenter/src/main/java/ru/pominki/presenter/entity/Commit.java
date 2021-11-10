@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Commit extends BaseEntity {
     protected String commitId;
     protected String folderId;
+    protected String message;
 
     @OneToOne
     protected Commit previouse;

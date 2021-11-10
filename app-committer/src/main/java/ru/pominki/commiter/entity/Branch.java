@@ -3,32 +3,28 @@ package ru.pominki.commiter.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "repositories")
+@Table(name = "branches")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Repository extends BaseEntity {
-    protected Long owner;
+public class Branch extends BaseEntity{
+    protected Long creator;
 
     protected String name;
-    protected LocalDateTime timeOfRepoCreation;
+    protected LocalDateTime timeOfBranchCreation;
 
     protected String folderId;
 
-    @OneToOne
-    protected Commit HEAD;
-
     @OneToMany
-    protected List<Branch> branches;
-
-    @OneToMany
-    protected List<User> collaborators;
+    protected List<Commit> commits;
 
     protected boolean valid;
 }

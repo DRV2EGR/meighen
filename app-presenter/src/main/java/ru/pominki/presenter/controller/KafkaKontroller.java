@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.pominki.presenter.model.KafkaMsg;
-import ru.pominki.presenter.service.ProducerService;
+import ru.pominki.presenter.service.producer.ProducerService;
 
 
 @RestController
