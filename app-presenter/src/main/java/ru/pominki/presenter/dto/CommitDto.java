@@ -13,6 +13,5 @@ public class CommitDto {
     protected String commitId;
     protected String message;
 
-    protected String previouse;
     protected String next;
 }

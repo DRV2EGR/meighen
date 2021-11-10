@@ -18,4 +18,5 @@ public class BranchDto {
     protected String name;
     protected LocalDateTime timeOfBranchCreation;
     protected List<CommitDto> commits;
+    protected String head;
 }

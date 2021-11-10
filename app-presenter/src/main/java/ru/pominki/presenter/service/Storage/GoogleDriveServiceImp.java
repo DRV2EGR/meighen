@@ -95,7 +95,7 @@ public class GoogleDriveServiceImp implements FilesUploader {
         return file;
     }
 
-    public CommitModel createCommitFolder() {
+    public CommitModel createCommitFolder(String branchFolder) {
         CommitModel cm = new CommitModel();
         try {
             String uuid = UUID.randomUUID().toString();
@@ -104,7 +104,7 @@ public class GoogleDriveServiceImp implements FilesUploader {
             File fileMetadata = new File();
             fileMetadata.setName("coomit-"+uuid);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
-            fileMetadata.setParents(Collections.singletonList("1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB"));
+            fileMetadata.setParents(Collections.singletonList(branchFolder));
 
             File file = getDriveService().files().create(fileMetadata)
                     .setFields("id, name")

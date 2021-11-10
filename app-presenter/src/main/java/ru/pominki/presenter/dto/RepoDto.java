@@ -23,7 +23,7 @@ public class RepoDto {
     protected Commit HEAD;
 
     @OneToMany
-    protected List<BranchDto> commits;
+    protected List<BranchDto> branches;
 
     @OneToMany
     protected List<UserDto> collaborators;
