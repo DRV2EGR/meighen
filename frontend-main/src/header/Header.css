@@ -1,0 +1,13 @@
+a{
+    color: black;
+    font-size: large;
+}
+
+.main-lbl {
+    color: black;
+    font-size: x-large;
+}
+
+body {
+    min-width: 270px;
+}

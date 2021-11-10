@@ -20,8 +20,12 @@ class MainPage extends Component {
                     <div className='container'>
                         <div className='row justify-content-center'>
                            <div>
-                               <h1>Main Page</h1>
+                               <h2>СКВ</h2>
+                               <h1><b>ПОМИНКИ</b></h1>
                            </div>
+                        </div>
+                        <div className='row'>
+                            Наша система контроля версий разработана с любовью!
                         </div>
                     </div>
                 </div>

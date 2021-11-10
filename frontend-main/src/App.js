@@ -31,7 +31,7 @@ class App extends Component {
 
         <Router>
             <Routes>
-                <Route exact path="/" element={<MainPage/>}/>
+                <Route exact path="/" element={<MainPage/>} />
                 {/*<Route exact path="/login" element={<Login/>}/>*/}
                 {/*<Route exact path="/recovery-password" element={<RecoveryPassword/>}/>*/}
                 <Route path="*"  element={<ErrorPage code={404} description={'Страница не найдена.'}/>} />
