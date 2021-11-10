@@ -8,6 +8,7 @@ import ErrorPage from "./ErrorPage";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Login from "./login_component/Login";
 import SignUP from "./login_component/SignUP";
+import Repositories from "./repositories/Repositories";
 
 class App extends Component {
     render()
@@ -37,6 +38,8 @@ class App extends Component {
 
                 <Route exact path={'/login'} element={<Login/>}/>
                 <Route exact path={'/signup'} element={<SignUP/>}/>
+
+                <Route exact path={'/repositories'} element={<Repositories/>}/>
 
 
                 <Route path="*"  element={<ErrorPage code={404} description={'Страница не найдена.'}/>} />

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.pominki.presenter.dto.BranchDto;
 import ru.pominki.presenter.dto.CommitDto;
 import ru.pominki.presenter.dto.RepoDto;
+import ru.pominki.presenter.dto.RepoShortDto;
 import ru.pominki.presenter.entity.Branch;
 import ru.pominki.presenter.entity.Commit;
 import ru.pominki.presenter.entity.Repository;
@@ -59,5 +60,12 @@ public class ClassCastToDto {
                 branch.getId(), branch.getCreator(), branch.getName(), branch.getTimeOfBranchCreation(), commitDtoList, null);
         if (branch.getHEAD() != null) { branch1.setHead(String.valueOf(branch.getHEAD())); }
         return branch1;
+    }
+
+    public RepoShortDto convertRepositoryToRepoShortDto(Repository repository) {
+        return new RepoShortDto(
+                repository.getId(),
+                repository.getName()
+        );
     }
 }

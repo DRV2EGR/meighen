@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.pominki.presenter.dto.RepoDto;
+import ru.pominki.presenter.dto.RepoShortDto;
 import ru.pominki.presenter.entity.Repository;
 import ru.pominki.presenter.entity.User;
 import ru.pominki.presenter.exception.NotFoundException;
@@ -111,6 +112,16 @@ public class RepositoryPrivateController {
         List<RepoDto> list = new ArrayList<>();
         for (Repository r : u.getRepositories()) {
             list.add(classCastToDto.convertRepoToRepoDto(r));
+        }
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/repos_short")
+    public ResponseEntity<?> showMyReposAsStrings() {
+        User u = getAuthentificatedUser();
+        List<RepoShortDto> list = new ArrayList<>();
+        for (Repository r : u.getRepositories()) {
+            list.add(classCastToDto.convertRepositoryToRepoShortDto(r));
         }
         return ResponseEntity.ok(list);
     }
