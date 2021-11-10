@@ -15,11 +15,12 @@ public class CommitService {
     @Autowired
     CommitRepository commitRepository;
 
-    public void createCommit(Long branchId, String message, String folderId) {
+    public void createCommit(Long branchId, String message, String folderId, String commitId) {
         Branch branch = branchRepository.findBranchById(branchId);
         Commit commit = new Commit();
         commit.setMessage(message);
         commit.setFolderId(folderId);
+        commit.setCommitId(commitId);
         commitRepository.save(commit);
 
         // Set next and prev

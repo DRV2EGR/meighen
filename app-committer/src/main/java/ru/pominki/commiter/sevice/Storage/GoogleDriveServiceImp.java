@@ -149,8 +149,8 @@ public class GoogleDriveServiceImp implements FilesUploader {
 
     public String createBranchFolder(String name, String repoFolderId) {
         try {
-//            String uuid = UUID.randomUUID().toString();
-            String rn = name; //"branch-"+name+"-"+uuid;
+            String uuid = UUID.randomUUID().toString();
+            String rn = "branch-"+name+"-"+uuid;
 
             File fileMetadata = new File();
             fileMetadata.setName(rn);

@@ -44,6 +44,7 @@ public class ClassCastToDto {
                 commit.getCommitId(), commit.getMessage(), null
         );
 //        if (commit.getPreviouse() != null) { commitDto.setPreviouse(commit.getPreviouse().getCommitId()); }
+        System.out.println(commit);
         if (commit.getNext() != null) { commitDto.setNext(commit.getNext().getCommitId()); }
 
         return commitDto;
@@ -54,6 +55,9 @@ public class ClassCastToDto {
         for (Commit c : branch.getCommits()) {
             commitDtoList.add(convertCommitToCommitDto(c));
         }
-        return new BranchDto(branch.getId(), branch.getCreator(), branch.getName(), branch.getTimeOfBranchCreation(), commitDtoList);
+        BranchDto branch1 = new BranchDto(
+                branch.getId(), branch.getCreator(), branch.getName(), branch.getTimeOfBranchCreation(), commitDtoList, null);
+        if (branch.getHEAD() != null) { branch1.setHead(String.valueOf(branch.getHEAD())); }
+        return branch1;
     }
 }

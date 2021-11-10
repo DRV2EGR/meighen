@@ -18,7 +18,7 @@ public class CommitsConsumerService {
             System.out.println(message.getBody());
             final JSONObject obj = new JSONObject(message.getBody());
             commitService.createCommit(
-                    obj.getLong("branchId"), obj.getString("message"), obj.getString("folderId")
+                    obj.getLong("branchId"), obj.getString("message"), obj.getString("folderId"), obj.getString("commitId")
             );
         } catch (Exception e) {
             e.printStackTrace();
