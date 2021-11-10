@@ -26,6 +26,7 @@ public class Branch extends BaseEntity{
 
     @OneToMany
     protected List<Commit> commits;
+    protected Long HEAD;
 
     protected boolean valid;
 }

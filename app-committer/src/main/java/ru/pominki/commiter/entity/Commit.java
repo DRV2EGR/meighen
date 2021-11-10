@@ -18,8 +18,5 @@ public class Commit extends BaseEntity {
     protected String message;
 
     @OneToOne
-    protected Commit previouse;
-
-    @OneToOne
     protected Commit next;
 }

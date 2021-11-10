@@ -9,5 +9,5 @@ public interface FilesUploader {
 
     public String createRepositoryFolder(String name);
     public boolean upload(MultipartFile file, CommitModel commitModel);
-    public CommitModel createCommitFolder() throws IOException;
+    public CommitModel createCommitFolder(String branchFolder) throws IOException;
 }

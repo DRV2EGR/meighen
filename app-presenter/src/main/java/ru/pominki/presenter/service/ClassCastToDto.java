@@ -40,9 +40,13 @@ public class ClassCastToDto {
     }
 
     public CommitDto convertCommitToCommitDto(Commit commit) {
-        return new CommitDto(
-                commit.getCommitId(), commit.getMessage(), commit.getPreviouse().getCommitId(), commit.getNext().getCommitId()
+        CommitDto commitDto = new CommitDto(
+                commit.getCommitId(), commit.getMessage(), null
         );
+//        if (commit.getPreviouse() != null) { commitDto.setPreviouse(commit.getPreviouse().getCommitId()); }
+        if (commit.getNext() != null) { commitDto.setNext(commit.getNext().getCommitId()); }
+
+        return commitDto;
     }
 
     public BranchDto convertBranchToBranchDto(Branch branch) {

@@ -10,4 +10,5 @@ import ru.pominki.presenter.entity.RefreshToken;
 
 public interface BranchRepository extends JpaRepository<Branch, String> {
     List<Branch> findAllByCreator(Long creatorId);
+    Branch findBranchById(Long branchId);
 }
