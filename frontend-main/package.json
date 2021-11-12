@@ -4,6 +4,8 @@
   "private": true,
   "dependencies": {
     "@autoaddress.ie/autoaddress-react": "^1.0.5",
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
@@ -81,6 +83,7 @@
     "react-css-dropdown": "^1.1.2",
     "react-dadata": "^2.9.3",
     "react-datepicker": "^3.8.0",
+    "react-dropdown-select": "^4.8.0",
     "react-geocode": "^0.2.3",
     "react-google-autocomplete": "^1.2.6",
     "react-loading-icons": "^1.0.4",

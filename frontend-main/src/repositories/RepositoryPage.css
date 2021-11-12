@@ -1,0 +1,7 @@
+.mmcard {
+    display: flex;
+}
+
+.commit-name {
+    flex: auto;
+}

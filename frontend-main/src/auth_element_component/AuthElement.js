@@ -43,6 +43,8 @@ class AuthElement extends Component {
                 body: JSON.stringify(body)
             }).then(response => response.json());
 
+            console.log(rstatus);
+
             if (status != 200) {
                 const cookies = new Cookies();
                 cookies.remove('accessToken');
