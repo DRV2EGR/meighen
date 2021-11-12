@@ -4,6 +4,7 @@ import { instanceOf } from 'prop-types';
 import { withCookies, Cookies } from 'react-cookie';
 // import CheckAcsessComponent from "./CheckAcsessComponent";
 import './Header.css';
+import AuthElement from "../auth_element_component/AuthElement";
 
 class Header extends Component {
     static propTypes = {
@@ -100,6 +101,7 @@ class Header extends Component {
         // const {code, description} = this.state;
         return (
             <div>
+                {/*<AuthElement />*/}
                 {/*<CheckAcsessComponent />*/}
 
                 <div className='opana d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm'>
