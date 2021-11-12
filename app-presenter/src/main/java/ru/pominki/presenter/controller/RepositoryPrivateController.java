@@ -130,4 +130,14 @@ public class RepositoryPrivateController {
     public ResponseEntity<?> checkforName(@RequestParam String name) {
         return ResponseEntity.ok(!(repositoryRepository.countAllByName(name) > 0));
     }
+
+    @GetMapping("/repo")
+    public ResponseEntity<?> getRepoInfo(@RequestParam Long repoId) {
+        User u = getAuthentificatedUser();
+
+        return ResponseEntity.ok(
+                u.getRepositories().stream().filter(r -> r.getId() == repoId)
+                        .map(repo -> classCastToDto.convertRepoToRepoDto(repo)).findFirst()
+        );
+    }
 }

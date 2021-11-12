@@ -1,29 +1,30 @@
 package ru.pominki.presenter.service.Storage;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
 import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.http.HttpHeaders;
+import com.google.api.client.googleapis.media.MediaHttpDownloader;
+import com.google.api.client.http.*;
 import com.google.api.services.drive.model.FileList;
 import com.google.api.services.drive.model.Permission;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.FileContent;
-import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import org.springframework.web.multipart.MultipartFile;
+import ru.pominki.presenter.dto.CommitFilesDto;
 import ru.pominki.presenter.model.CommitModel;
 //import com.spring.service.GoogleDriveService;
 
@@ -152,5 +153,117 @@ public class GoogleDriveServiceImp implements FilesUploader {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public Map<String, String> showFilesFromCommit(String commitFolder) {
+        Drive driveService = getDriveService();
+
+        String pageToken = null;
+        List<String> list = new ArrayList<>();
+
+        String query = null;
+        if (commitFolder == null) {
+            query = " mimeType = 'application/vnd.google-apps.folder' " //
+                    + " and 'root' in parents";
+        } else {
+            query = " mimeType != 'application/vnd.google-apps.folder' " //
+                    + " and '" + commitFolder + "' in parents";
+        }
+
+        Map<String, String> li = new HashMap<>();
+
+        do {
+            FileList result = null;
+            try {
+                result = driveService.files().list().setQ(query).setSpaces("drive") //
+                        // Fields will be assigned values: id, name, createdTime
+                        .setFields("nextPageToken, files(id, name, createdTime)")//
+                        .setPageToken(pageToken).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (File file : result.getFiles()) {
+                list.add(file.getName());
+                li.put(file.getName(), file.getId());
+            }
+            pageToken = result.getNextPageToken();
+        } while (pageToken != null);
+        //
+        return li;
+    }
+
+    public String downloadFile(String fileId, String fileName) {
+        OutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            getDriveService().files().get(fileId)
+                    .executeMediaAndDownloadTo(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        String path = classLoader.getResource(".").getFile()+fileName;
+
+        try(OutputStream outputStream1 = new FileOutputStream(path);
+        ) {
+            ((ByteArrayOutputStream) outputStream).writeTo(outputStream1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return path;
+    }
+
+    public String zipFiles(List<String> srcFiles) throws IOException {
+        ClassLoader classLoader = getClass().getClassLoader();
+        String loc = (classLoader.getResource(".").getFile()+"multiCompressed.zip").substring(1);
+
+        FileOutputStream fos = new FileOutputStream(loc);
+        ZipOutputStream zipOut = new ZipOutputStream(fos);
+        for (String srcFile : srcFiles) {
+            java.io.File fileToZip = new java.io.File(srcFile);
+            FileInputStream fis = new FileInputStream(fileToZip);
+            ZipEntry zipEntry = new ZipEntry(fileToZip.getName());
+            zipOut.putNextEntry(zipEntry);
+
+            byte[] bytes = new byte[1024];
+            int length;
+            while((length = fis.read(bytes)) >= 0) {
+                zipOut.write(bytes, 0, length);
+            }
+            fis.close();
+        }
+        zipOut.close();
+        fos.close();
+
+        return loc;
+    }
+
+    public String getAllZippedFilesFromCommit(String commitFolder) throws IOException {
+        Map<String, String> mss = showFilesFromCommit(commitFolder);
+        List<String> fileList = new ArrayList<>();
+        for (var entry : mss.entrySet()) {
+//            System.out.println(entry.getKey() + "/" + entry.getValue());
+
+            String fileId = entry.getValue();
+            OutputStream outputStream = new ByteArrayOutputStream();
+            try {
+                getDriveService().files().get(fileId)
+                        .executeMediaAndDownloadTo(outputStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            try(OutputStream outputStream1 = new FileOutputStream(
+                    classLoader.getResource(".").getFile()+'/'+entry.getKey())
+            ) {
+                ((ByteArrayOutputStream) outputStream).writeTo(outputStream1);
+                String name = classLoader.getResource(".").getFile()+entry.getKey();
+                fileList.add(name.substring(1));
+            }
+        }
+
+        return zipFiles(fileList);
     }
 }
