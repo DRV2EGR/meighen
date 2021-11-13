@@ -10,6 +10,8 @@ import Login from "./login_component/Login";
 import SignUP from "./login_component/SignUP";
 import Repositories from "./repositories/Repositories";
 import RepositoryPage from "./repositories/RepositoryPage";
+import FilesComponent from "./files_component/FilesComponent";
+import FilesUploadComponrnt from "./files_component/FilesUploadComponrnt";
 
 class App extends Component {
     render()
@@ -58,6 +60,11 @@ class App extends Component {
 
                     <Route path={"/repository/:id/:branch"} component={RepositoryPage} />
                     <Route path={"/repository/:id"} component={RepositoryPage} />
+
+                    <Route path={"/upload/:branch/:name"} component={FilesUploadComponrnt} />
+
+
+                    {/*<Route path={"/files"} component={FilesComponent} />*/}
                     {/*<Route path={"/repository/:id/:branch/:commit"} component={RepositoryPage} />*/}
 
                     {/*<Route exact path='/'>*/}
