@@ -28,7 +28,7 @@ public class ClassCastToDto {
                 repository.getId(),
                 repository.getName(),
                 repository.getTimeOfRepoCreation(),
-                repository.getHEAD(),
+                repository.getDefaultBranch().getName(),
                 branchDtoList,
                 new ArrayList<>()
         );

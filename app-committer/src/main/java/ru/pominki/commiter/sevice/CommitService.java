@@ -25,17 +25,17 @@ public class CommitService {
 
         // Set next and prev
         if (branch.getCommits().isEmpty() || branch.getCommits().size() == 0) {
-            branch.setHEAD(commit.getId());
+            branch.setHEAD(commit.getCommitId());
             branch.getCommits().add(commit);
 
             commitRepository.save(commit);
             branchRepository.save(branch);
         } else {
-            Commit oldHead = commitRepository.findById(branch.getHEAD()).get();
+            Commit oldHead = commitRepository.findCommitByCommitId(branch.getHEAD());
 //            commit.setPreviouse(oldHead);
             oldHead.setNext(commit);
 
-            branch.setHEAD(commit.getId());
+            branch.setHEAD(commit.getCommitId());
             branch.getCommits().add(commit);
 
             commitRepository.save(oldHead);

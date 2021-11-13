@@ -5,3 +5,20 @@
 .commit-name {
     flex: auto;
 }
+
+.mcd {
+    text-align: left !important;
+}
+
+.mspn {
+    font-size: 0.8em;
+    font-weight: lighter;
+    margin-left: 50px;
+}
+
+.form-popup {
+}
+
+.form-popup-none {
+    display: none;
+}

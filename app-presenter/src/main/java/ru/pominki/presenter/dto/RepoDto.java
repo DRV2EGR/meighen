@@ -19,12 +19,8 @@ public class RepoDto {
     protected String name;
     protected LocalDateTime timeOfRepoCreation;
 
-    @OneToOne
-    protected Commit HEAD;
+    protected String mainBranch;
 
-    @OneToMany
     protected List<BranchDto> branches;
-
-    @OneToMany
     protected List<UserDto> collaborators;
 }

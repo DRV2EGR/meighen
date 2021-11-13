@@ -26,6 +26,7 @@ import PropTypes from "prop-types";
 import {useNavigate} from 'react-router-dom';
 // import {withRouter} from 'react-router';
 
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
 
 const useStyles = (theme) => ({
     paper: {
@@ -54,7 +55,7 @@ async function loginUser(credentials) { //credentials as param
     //console.log(JSON.stringify(credentials));
 
     let data = '';
-    return fetch( '/api/auth/login', {
+    return fetch( 'api/auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

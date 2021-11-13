@@ -37,6 +37,10 @@ public class BranchService {
             branch.setFolderId(filesUploader.createBranchFolder(name, repository.getFolderId()));
             repository.getBranches().add(branch);
 
+            if (repository.getDefaultBranch() == null) {
+                repository.setDefaultBranch(branch);
+            }
+
             branchRepository.save(branch);
             repositoryRepository.save(repository);
         } catch (Exception e) {

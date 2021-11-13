@@ -27,6 +27,9 @@ public class Repository extends BaseEntity {
     @OneToMany
     protected List<Branch> branches;
 
+    @OneToOne
+    protected Branch defaultBranch;
+
     @OneToMany
     protected List<User> collaborators;
 

@@ -55,7 +55,10 @@ class App extends Component {
                     <Route exact path={'/signup'} component={SignUP}/>
 
                     <Route exact path={'/repositories'} component={Repositories}/>
+
+                    <Route path={"/repository/:id/:branch"} component={RepositoryPage} />
                     <Route path={"/repository/:id"} component={RepositoryPage} />
+                    {/*<Route path={"/repository/:id/:branch/:commit"} component={RepositoryPage} />*/}
 
                     {/*<Route exact path='/'>*/}
                     {/*  <Header/>*/}

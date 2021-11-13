@@ -48,7 +48,7 @@ class Header extends Component {
 
             //console.log(b)
 
-            fetch(process.env.REACT_APP_BASE_BACKEND_URL + '/api/user/public/get_user_img_url_by_username?username=' + b, {
+            fetch(process.env.REACT_APP_BASE_BACKEND_URL + 'api/user/public/get_user_img_url_by_username?username=' + b, {
                 method: 'post',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + a,
@@ -78,7 +78,7 @@ class Header extends Component {
             return (
                 <div className="dropdown-child">
                     <a href="/user_profile">Мой кабинет</a>
-                    <a href="/add_order">Разместить объявление</a>
+                    <a href="/repositories">Мои репозитории</a>
                     <a href="/user_settings">Настройки</a>
                     <a href="/" onClick={this.handleRemoveCookie}>Выйти</a>
                 </div>
