@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install
+RUN npm i es-abstract
 
 COPY . ./
 # VOLUME /public
