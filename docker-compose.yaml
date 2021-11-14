@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - "./tmp-dir:/tmp"
     restart: always
     depends_on: 
       - db 
@@ -18,10 +20,10 @@ services:
       DB_NAME: postgres
       DB_USERNAME: $DB_USER
       DB_PASSWORD: $DB_PASSWORD
-    networks: # Networks to join (Services on the same network can communicate with each other using their name)
-      - backend
-      - frontend
-      - db
+    # networks: # Networks to join (Services on the same network can communicate with each other using their name)
+    #   - backend
+    #   - frontend
+    #   - db
 
   app-committer:
     build:
@@ -29,6 +31,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8082:8080"
+    volumes:
+      - "./tmp-dir:/tmp"
     restart: always
     depends_on: 
       - db 
@@ -55,8 +59,8 @@ services:
     restart: always
     depends_on:
       - app-presenter
-    networks:
-      - frontend  
+    # networks:
+    #   - frontend  
 
   db:
     image: 'postgres:13.1-alpine'
@@ -69,8 +73,8 @@ services:
       - "5432:5432"
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
-    networks:
-      - db
+    # networks:
+    #   - db
     restart: always
 
   zookeeper:
@@ -111,7 +115,7 @@ services:
       depends_on:
         - zookeeper
 # Networks to be created to facilitate communication between containers
-networks:
-  backend:
-  frontend:
-  db:
+# networks:
+#   backend:
+#   frontend:
+#   db:
