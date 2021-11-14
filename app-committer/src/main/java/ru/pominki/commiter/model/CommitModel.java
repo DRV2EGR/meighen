@@ -1,5 +1,8 @@
 package ru.pominki.commiter.model;
 
+import java.io.File;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -8,4 +11,8 @@ public class CommitModel {
     protected String commitId;
     protected String folderId;
     protected String message;
+
+    protected boolean hasNeedToCopy;
+    protected String oldCommitFolder;
+    protected List<File> filesToUpload;
 }

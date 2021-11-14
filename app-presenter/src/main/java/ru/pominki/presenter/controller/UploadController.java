@@ -33,21 +33,23 @@ public class UploadController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadFile(@RequestParam Long repo, @RequestParam String message,
                                      @RequestParam List<MultipartFile> files ) throws IOException {
-        CommitModel commit = driveService.createCommitFolder("1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB");
-        commit.setMessage(message);
+//        CommitModel commit = driveService.createCommitFolder("1Rn_ejgKRlsbVkPQZm1F_dLhT0uIFzSHB");
+//        commit.setMessage(message);
+//
+//        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+//        String json = ow.writeValueAsString(commit);
+//        System.out.println(json);
+//        producerService.produce(new KafkaMsg(json));
+//
+////        driveService = new PCloudDriveService();
+//        for (MultipartFile file : files) {
+//            //file.getName(), file, file.getContentType()
+//            Boolean file2 = driveService.upload(file, commit);
+//        }
+//
+//        return ResponseEntity.ok(commit);
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(commit);
-        System.out.println(json);
-        producerService.produce(new KafkaMsg(json));
-
-//        driveService = new PCloudDriveService();
-        for (MultipartFile file : files) {
-            //file.getName(), file, file.getContentType()
-            Boolean file2 = driveService.upload(file, commit);
-        }
-
-        return ResponseEntity.ok(commit);
+        return ResponseEntity.internalServerError().build();
     }
 
 }

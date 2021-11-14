@@ -104,6 +104,13 @@
 			<artifactId>google-api-services-drive</artifactId>
 			<version>v3-rev26-1.18.0-rc</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

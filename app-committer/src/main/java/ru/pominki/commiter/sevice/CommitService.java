@@ -1,11 +1,17 @@
 package ru.pominki.commiter.sevice;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.pominki.commiter.entity.Branch;
 import ru.pominki.commiter.entity.Commit;
 import ru.pominki.commiter.repository.BranchRepository;
 import ru.pominki.commiter.repository.CommitRepository;
+import ru.pominki.commiter.sevice.Storage.FilesUploader;
 
 @Service
 public class CommitService {
@@ -14,6 +20,9 @@ public class CommitService {
 
     @Autowired
     CommitRepository commitRepository;
+
+    @Autowired
+    FilesUploader filesUploader;
 
     public void createCommit(Long branchId, String message, String folderId, String commitId) {
         Branch branch = branchRepository.findBranchById(branchId);
@@ -41,6 +50,17 @@ public class CommitService {
             commitRepository.save(oldHead);
             commitRepository.save(commit);
             branchRepository.save(branch);
+        }
+    }
+
+    public void copyFilesFromCommitToCommit(String oldCommitFolder, String newCommitFolder) throws IOException {
+        filesUploader.copyCommit(oldCommitFolder, newCommitFolder);
+    }
+
+    public void uploadFilesToCommit(List<File> files, String commitFolderId) throws IOException {
+        Tika tika = new Tika();
+        for (File f : files) {
+            filesUploader.upload(f, commitFolderId, tika.detect(f));
         }
     }
 }

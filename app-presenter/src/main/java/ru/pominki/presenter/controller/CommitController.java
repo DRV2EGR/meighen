@@ -62,9 +62,25 @@ public class CommitController {
 //        CommitModel commit = driveService.createCommitFolder();
         Branch b = branchRepository.findBranchById(branchId);
 
-        CommitModel commit = driveService.createCommitFolder(b.getFolderId());
+        CommitModel commit;
+        commit = driveService.createCommitFolder(b.getFolderId());
         commit.setMessage(message);
         commit.setBranchId(branchId);
+        commit.setFilesToUpload(new ArrayList<>());
+
+        for (MultipartFile file : files) {
+            java.io.File convFile = new java.io.File(System.getProperty("java.io.tmpdir")+"/"+file.getOriginalFilename());
+            file.transferTo(convFile);
+
+            commit.getFilesToUpload().add(convFile);
+        }
+
+        if (b.getHEAD() != null) {
+            commit.setHasNeedToCopy(true);
+            commit.setOldCommitFolder(
+                    commitRepository.findCommitByCommitId(b.getHEAD()).getFolderId()
+            );
+        }
 
         ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
         String json = ow.writeValueAsString(commit);
@@ -72,11 +88,19 @@ public class CommitController {
         commitProducerService.createCommit(new KafkaMsg(json));
 
 //        driveService = new PCloudDriveService();
-        for (MultipartFile file : files) {
-            //file.getName(), file, file.getContentType()
-            Boolean file2 = driveService.upload(file, commit);
-        }
-
+//        for (MultipartFile file : files) {
+//            //file.getName(), file, file.getContentType()
+//            Boolean file2 = driveService.upload(file, commit);
+//        }
+//
+//        if (b.getHEAD() != null) {
+//            driveService.copyCommit(
+//                    commit.getFolderId(),
+//                    commitRepository.findCommitByCommitId(b.getHEAD()).getFolderId()
+//
+//            );
+//        }
+//
 
         return ResponseEntity.ok(commit);
     }
@@ -115,6 +139,7 @@ public class CommitController {
         String fullPath = driveService.downloadFile(fileId, fileName).substring(1);
         File file = new File(fullPath);
         long fileLength = file.length(); // this is ok, but see note below
+        file.delete();
 
         HttpHeaders respHeaders = new HttpHeaders();
         respHeaders.setContentType(MediaType.valueOf(tika.detect(file)));

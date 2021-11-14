@@ -1,11 +1,14 @@
 package ru.pominki.commiter.sevice.Storage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.UUID;
+import java.util.*;
 
+import javax.activation.MimeType;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
@@ -14,6 +17,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -69,15 +73,13 @@ public class GoogleDriveServiceImp implements FilesUploader {
         return convFile;
     }
 
-    public File upLoadFile(String fileName, MultipartFile filePath, String mimeType, CommitModel commitModel) {
+    public File upLoadFile(String fileName, java.io.File fileUpload, String mimeType, String commitFolderId) {
         File file = new File();
         try {
-            String fn = filePath.getOriginalFilename();
-            java.io.File fileUpload = multipartToFile(filePath, fn);
             com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
             fileMetadata.setMimeType(mimeType);
-            fileMetadata.setName(fn);
-            fileMetadata.setParents(Collections.singletonList(commitModel.getFolderId()));
+            fileMetadata.setName(fileName);
+            fileMetadata.setParents(Collections.singletonList(commitFolderId));
             com.google.api.client.http.FileContent fileContent = new FileContent(mimeType, fileUpload);
             file = getDriveService().files().create(fileMetadata, fileContent)
                     .setFields("id,webContentLink,webViewLink").execute();
@@ -114,9 +116,14 @@ public class GoogleDriveServiceImp implements FilesUploader {
     }
 
     @Override
-    public boolean upload(MultipartFile file, CommitModel commitModel) {
+    public boolean upload(java.io.File file, String commitFilderId, String mt) {
         try {
-            upLoadFile(file.getName(), file, file.getContentType(), commitModel);
+            upLoadFile(
+                    file.getName(),
+                    file,
+                    mt,
+                    commitFilderId
+            );
         } catch (Exception e) {
             // pass;
             return false;
@@ -167,6 +174,103 @@ public class GoogleDriveServiceImp implements FilesUploader {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public String downloadFile(String fileId, String fileName) {
+        OutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            getDriveService().files().get(fileId)
+                    .executeMediaAndDownloadTo(outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        String path = classLoader.getResource(".").getFile()+fileName;
+
+        try(OutputStream outputStream1 = new FileOutputStream(path);
+        ) {
+            ((ByteArrayOutputStream) outputStream).writeTo(outputStream1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return path;
+    }
+
+    public Map<String, String> showFilesFromCommit(String commitFolder) {
+        Drive driveService = getDriveService();
+
+        String pageToken = null;
+        List<String> list = new ArrayList<>();
+
+        String query = null;
+        if (commitFolder == null) {
+            query = " mimeType = 'application/vnd.google-apps.folder' " //
+                    + " and 'root' in parents";
+        } else {
+            query = " mimeType != 'application/vnd.google-apps.folder' " //
+                    + " and '" + commitFolder + "' in parents";
+        }
+
+        Map<String, String> li = new HashMap<>();
+
+        do {
+            FileList result = null;
+            try {
+                result = driveService.files().list().setQ(query).setSpaces("drive") //
+                        // Fields will be assigned values: id, name, createdTime
+                        .setFields("nextPageToken, files(id, name, createdTime)")//
+                        .setPageToken(pageToken).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            for (File file : result.getFiles()) {
+                list.add(file.getName());
+                li.put(file.getName(), file.getId());
+            }
+            pageToken = result.getNextPageToken();
+        } while (pageToken != null);
+        //
+        return li;
+    }
+
+    public void copyCommit(String commitFolderId, String oldCommitFolderId) throws IOException {
+        FileList result = null;
+        Map<String, String> mapFiles = showFilesFromCommit(commitFolderId);
+        try {
+            String pageToken = null;
+            do {
+                try {
+                    String query = " mimeType != 'application/vnd.google-apps.folder' "
+                            + " and '" + oldCommitFolderId + "' in parents";
+                    result = getDriveService().files().list().setQ(query).setSpaces("drive")
+                            .setFields("nextPageToken, files(id, name, createdTime)")
+                            .setPageToken(pageToken).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (File file : result.getFiles()) {
+                    if (mapFiles.containsKey(file.getName())) {
+                        continue;
+                    }
+                    String file1 = downloadFile(file.getId(), file.getName());
+                    java.io.File fileUpload = new java.io.File(file1);
+                    com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+                    fileMetadata.setMimeType(file.getMimeType());
+                    fileMetadata.setName(file.getName());
+                    fileMetadata.setParents(Collections.singletonList(commitFolderId));
+                    com.google.api.client.http.FileContent fileContent = new FileContent(file.getMimeType(), fileUpload);
+                    getDriveService().files().create(fileMetadata, fileContent)
+                            .setFields("id,webContentLink,webViewLink").execute();
+                    java.io.File ftd = new java.io.File(file1);
+                    ftd.delete();
+                }
+                pageToken = result.getNextPageToken();
+            } while (pageToken != null);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

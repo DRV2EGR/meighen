@@ -98,27 +98,29 @@ public class GoogleDriveServiceImp implements FilesUploader {
 
     public CommitModel createCommitFolder(String branchFolder) {
         CommitModel cm = new CommitModel();
-        try {
-            String uuid = UUID.randomUUID().toString();
-            cm.setCommitId(uuid);
 
+        String uuid = UUID.randomUUID().toString();
+        cm.setCommitId(uuid);
+
+        File file;
+        try {
             File fileMetadata = new File();
-            fileMetadata.setName("coomit-"+uuid);
+            fileMetadata.setName("commit-" + uuid);
             fileMetadata.setMimeType("application/vnd.google-apps.folder");
             fileMetadata.setParents(Collections.singletonList(branchFolder));
 
-            File file = getDriveService().files().create(fileMetadata)
+            file = getDriveService().files().create(fileMetadata)
                     .setFields("id, name")
                     .execute();
-
-            System.out.println("Folder ID: " + file.getId());
-            cm.setFolderId(file.getId());
-
-            return cm;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+
+        System.out.println("Folder ID: " + file.getId());
+        cm.setFolderId(file.getId());
+
+        return cm;
     }
 
     @Override
@@ -265,5 +267,59 @@ public class GoogleDriveServiceImp implements FilesUploader {
         }
 
         return zipFiles(fileList);
+    }
+
+    public String copyFile(String fileId, String destinationFolderId, String newName, boolean deleteOriginal) throws IOException {
+//        LOG.debug("[copyFile] fileId: {}; destinationFolderId: {}, newName: {}; deleteOriginal: {}.", fileId, destinationFolderId,
+//                newName, deleteOriginal);
+        File copy = new File();
+        copy.setParents(Collections.singletonList(destinationFolderId));
+        if (!newName.isEmpty()) {
+            copy.setName(newName);
+        }
+        File resultFile = getDriveService().files().copy(fileId, copy).setFields("id, parents").execute();
+        String copiedResourceId = resultFile.getId();
+        if (deleteOriginal) {
+            getDriveService().files().delete(fileId).execute();
+        }
+        return copiedResourceId;
+    }
+
+    public void copyCommit(String commitFolderId, String oldCommitFolderId) throws IOException {
+        FileList result = null;
+        Map<String, String> mapFiles = showFilesFromCommit(commitFolderId);
+        try {
+            String pageToken = null;
+            do {
+                try {
+                    String query = " mimeType != 'application/vnd.google-apps.folder' "
+                            + " and '" + oldCommitFolderId + "' in parents";
+                    result = getDriveService().files().list().setQ(query).setSpaces("drive")
+                            .setFields("nextPageToken, files(id, name, createdTime)")
+                            .setPageToken(pageToken).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                for (File file : result.getFiles()) {
+                    if (mapFiles.containsKey(file.getName())) {
+                        continue;
+                    }
+                    String file1 = downloadFile(file.getId(), file.getName());
+                    java.io.File fileUpload = new java.io.File(file1);
+                    com.google.api.services.drive.model.File fileMetadata = new com.google.api.services.drive.model.File();
+                    fileMetadata.setMimeType(file.getMimeType());
+                    fileMetadata.setName(file.getName());
+                    fileMetadata.setParents(Collections.singletonList(commitFolderId));
+                    com.google.api.client.http.FileContent fileContent = new FileContent(file.getMimeType(), fileUpload);
+                    getDriveService().files().create(fileMetadata, fileContent)
+                            .setFields("id,webContentLink,webViewLink").execute();
+                    java.io.File ftd = new java.io.File(file1);
+                    ftd.delete();
+                }
+                pageToken = result.getNextPageToken();
+            } while (pageToken != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
