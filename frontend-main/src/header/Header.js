@@ -79,7 +79,7 @@ class Header extends Component {
                 <div className="dropdown-child">
                     <a href="/user_profile">Мой кабинет</a>
                     <a href="/repositories">Мои репозитории</a>
-                    <a href="/user_settings">Настройки</a>
+                    {/* <a href="/user_settings">Настройки</a> */}
                     <a href="/" onClick={this.handleRemoveCookie}>Выйти</a>
                 </div>
             )
@@ -105,7 +105,7 @@ class Header extends Component {
                 {/*<CheckAcsessComponent />*/}
 
                 <div className='opana d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm'>
-                    <h5 className='my-0 mr-md-auto font-weight-bold'><a className='main-lbl p-2 text-dark' href='/'>Pominki</a></h5>
+                    <h5 className='my-0 mr-md-auto font-weight-bold'><a className='main-lbl p-2 text-dark' href='/'>Meighgen</a></h5>
 
                     <nav className='my-2 my-md-0 mr-md-3'>
                         {/*<a className='p-2 text-dark' href='/user/1'>Личный кабинет</a>*/}

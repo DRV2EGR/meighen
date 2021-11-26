@@ -8,11 +8,11 @@
 		<version>2.5.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ru.pominki</groupId>
+	<groupId>ru.meighgen</groupId>
 	<artifactId>presenter</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>presenter</name>
-	<description>Presenter for scm pominki</description>
+	<description>Presenter for scm meighgen</description>
 	<properties>
 		<java.version>11</java.version>
 <!--		<tomcat.version>7.0.63</tomcat.version>-->
@@ -171,6 +171,25 @@
 			<version>2.1.0</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.6.1</version>
+			<scope>compile</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -178,6 +197,11 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.0</version>
 			</plugin>
 		</plugins>
 	</build>

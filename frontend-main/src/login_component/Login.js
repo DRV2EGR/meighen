@@ -110,7 +110,7 @@ class Login extends Component {
             <Typography variant="body2" color="textSecondary" align="center">
                 {'Copyright © '}
                 <Link color="inherit" href="https://material-ui.com/">
-                    pominki
+                    Meighgen
                 </Link>{' '}
                 {new Date().getFullYear()}
                 {'.'}
