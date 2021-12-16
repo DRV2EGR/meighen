@@ -49,6 +49,28 @@ public class ClassCastToDto {
         return repoDto;
     }
 
+    public RepoCollabDto convertRepoToRepoCollabDto(Repository repository) {
+        List<BranchDto> branchDtoList = new ArrayList<>();
+        for (Branch b : repository.getBranches()) {
+            branchDtoList.add(convertBranchToBranchDto(b));
+        }
+        RepoCollabDto repoDto = new RepoCollabDto(
+                repository.getId(),
+                repository.getName(),
+                repository.getTimeOfRepoCreation(),
+                repository.getDefaultBranch().getName(),
+                branchDtoList,
+                new ArrayList<>(),
+                userService.findById(repository.getOwner()).get().getUsername()
+        );
+
+        for (User u : repository.getCollaborators()) {
+            repoDto.getCollaborators().add(userService.convertUserToUserDto(u));
+        }
+
+        return repoDto;
+    }
+
     /**
      * Convert commit to commit dto commit dto.
      *

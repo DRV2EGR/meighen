@@ -48,17 +48,23 @@ class Header extends Component {
 
             //console.log(b)
 
-            fetch(process.env.REACT_APP_BASE_BACKEND_URL + 'api/user/public/get_user_img_url_by_username?username=' + b, {
-                method: 'post',
-                headers: new Headers({
-                    'Authorization': 'Bearer ' + a,
-                    'Content-Type': 'application/json'
-                }),
-                body: JSON.stringify(cookies.get('username'))
-            }).then(response => response.json())
-                .then(res => /*console.log(result.imgUrl) );*/ this.setState({data_p: res.img}));
+            this.setState({
+                data_p: 'https://icon-library.com/images/anonymous-person-icon/anonymous-person-icon-18.jpg'
+            }); //TODO: update img
+
+            // fetch(process.env.REACT_APP_BASE_BACKEND_URL + 'api/user/public/get_user_img_url_by_username?username=' + b, {
+            //     method: 'post',
+            //     headers: new Headers({
+            //         'Authorization': 'Bearer ' + a,
+            //         'Content-Type': 'application/json'
+            //     }),
+            //     body: JSON.stringify(cookies.get('username'))
+            // }).then(response => response.json())
+            //     .then(res => /*console.log(result.imgUrl) );*/ this.setState({data_p: res.img}));
         } else {
-            this.setState({data_p: 'https://iconorbit.com/icons/256-watermark/1611201511385554301-Girl%20User.jpg'}); //TODO: update img
+            this.setState({
+                data_p: 'https://icon-library.com/images/anonymous-person-icon/anonymous-person-icon-18.jpg'
+            }); //TODO: update img
         }
     }
 

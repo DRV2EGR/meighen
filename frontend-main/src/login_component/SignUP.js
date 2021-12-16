@@ -281,21 +281,21 @@ class SignUP extends Component {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12}>
-                                    <Select
-                                        required
-                                        labelId="demo-controlled-open-select-label"
-                                        id="demo-controlled-open-select"
-                                        defaultValue = ""
-                                        onChange={this.handleChange}
-                                    >
-                                        <MenuItem value="" hidden>
-                                            <em>None</em>
-                                        </MenuItem>
-                                        <MenuItem className='font-weight-bold lead' value="10">Собственник</MenuItem>
-                                        <MenuItem className='font-weight-bold lead'value="20">Агент (риелтор)</MenuItem>
-                                    </Select>*
-                                </Grid>
+                                {/*<Grid item xs={12}>*/}
+                                {/*    <Select*/}
+                                {/*        required*/}
+                                {/*        labelId="demo-controlled-open-select-label"*/}
+                                {/*        id="demo-controlled-open-select"*/}
+                                {/*        defaultValue = ""*/}
+                                {/*        onChange={this.handleChange}*/}
+                                {/*    >*/}
+                                {/*        <MenuItem value="" hidden>*/}
+                                {/*            <em>None</em>*/}
+                                {/*        </MenuItem>*/}
+                                {/*        <MenuItem className='font-weight-bold lead' value="10">Собственник</MenuItem>*/}
+                                {/*        <MenuItem className='font-weight-bold lead'value="20">Агент (риелтор)</MenuItem>*/}
+                                {/*    </Select>**/}
+                                {/*</Grid>*/}
 
                                 <Grid item xs={12}>
                                     <FormControlLabel

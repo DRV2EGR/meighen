@@ -227,3 +227,150 @@
     width: 200px;
     height: 200px;
 }
+
+.r-div-repo-name {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.mimg {
+    width: 40px;
+    height: 40px;
+
+    margin-left: auto;
+}
+
+.mimg:hover {
+    /*margin-top: 70px;*/
+    width: 40px;
+    -webkit-animation-name: rotation;
+    -webkit-animation-duration: 10s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-name: rotation;
+    -moz-animation-duration: 10s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: linear;
+    -o-animation-name: rotation;
+    -o-animation-duration: 10s;
+    -o-animation-iteration-count: infinite;
+    -o-animation-timing-function: linear;
+    animation-name: rotation;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@-webkit-keyframes rotation {
+    0% {-webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);
+        -moz-transform:rotate(360deg);
+        -o-transform:rotate(360deg);
+        transform:rotate(360deg);}
+}
+@-moz-keyframes rotation {
+    0% {-webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);
+        -moz-transform:rotate(360deg);
+        -o-transform:rotate(360deg);
+        transform:rotate(360deg);}
+}
+@-o-keyframes rotation {
+    0% {-webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);
+        -moz-transform:rotate(360deg);
+        -o-transform:rotate(360deg);
+        transform:rotate(360deg);}
+}
+@keyframes rotation {
+    0% {-webkit-transform:rotate(0deg);
+        -moz-transform:rotate(0deg);
+        -o-transform:rotate(0deg);
+        transform:rotate(0deg);}
+    100% {-webkit-transform:rotate(360deg);
+        -moz-transform:rotate(720deg);
+        -o-transform:rotate(360deg);
+        transform:rotate(360deg);}
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(75px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+.item {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-name: fadeIn;
+}
+/*body {*/
+/*    font-family: 'roboto';*/
+/*    font-size: 14px;*/
+/*}*/
+.wrapper .menu {
+    display: none;
+}
+.wrapper--open .menu {
+    display: block;
+}
+.cta {
+    width: 4em;
+    height: 4em;
+    text-align: center;
+    background-color: #c62828;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 4em;
+    cursor: pointer;
+    border: 0 none;
+}
+.cta:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+.item {
+    /*background-color: #1565c0;*/
+    font-size: 1.2em;
+    margin-top: 0.5em;
+    margin-right: 0;
+    margin-bottom: 0.5em;
+    margin-left: 0;
+    padding-top: 0.5em;
+    padding-right: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
+    text-transform: uppercase;
+    /* Add the transition timing to the item since this class won't change */
+    transition: all 0.15s ease-in-out;
+    /*cursor: pointer;*/
+    /* Animate each child object a little bit later for a neater feel */
+    /* Wish I could do this in one line, though... */
+}
+/*.item:hover {*/
+/*    background-color: #c62828;*/
+/*}*/
+.item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.item:nth-child(3) {
+    animation-delay: 0.2s;
+}
+.item:nth-child(4) {
+    animation-delay: 0.3s;
+}
+.item:nth-child(5) {
+    animation-delay: 0.4s;
+}

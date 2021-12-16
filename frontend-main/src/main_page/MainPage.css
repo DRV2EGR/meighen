@@ -1,3 +1,6 @@
+.ma {
+   margin-right: 10px;
+}
 
 .button-27 {
    appearance: none;
@@ -39,4 +42,10 @@
 .button-27:active {
     box-shadow: none;
     transform: translateY(0);
+}
+
+.m-buttons-div {
+   display: flex;
+   margin-top: 10px;
+   justify-content: center;
 }

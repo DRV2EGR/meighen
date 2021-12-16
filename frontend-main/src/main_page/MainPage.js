@@ -19,10 +19,23 @@ class MainPage extends Component {
 
         if (b) { //войдено
             return (
-                <a href="/repositories">
-                    <button className="button-27" role="button">Мои репозитории</button>
-                </a>
-            )
+                <div className="m-buttons-div">
+                    <a href="/repositories">
+                        <button className="button-27" role="button">Мои репозитории</button>
+                    </a>
+                </div>
+            );
+        } else {
+            return (
+                <div className="m-buttons-div">
+                    <a href="/login" className="ma">
+                        <button className="button-27" role="button">Войти</button>
+                    </a>
+                    <a href="/signup" className="ma">
+                        <button className="button-27" role="button">Зарегистрироваться</button>
+                    </a>
+                </div>
+            );
         }
     }
 
@@ -46,7 +59,7 @@ class MainPage extends Component {
                     </div>
                 </div>
 
-                {/*<a href=""> <button className="button-27" role="button">Мои репозитории</button></a>*/}
+                {this.renderMainButtons()}
 
             </div>
         );

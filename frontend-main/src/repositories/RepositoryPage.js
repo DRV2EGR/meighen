@@ -14,6 +14,36 @@ import './RepositoryPage.css';
 import AuthElement from "../auth_element_component/AuthElement";
 import TextField from "@material-ui/core/TextField";
 
+//import classnames function
+function classNames () {
+    var hasOwn = {}.hasOwnProperty;
+    var classes = [];
+
+    for (var i = 0; i < arguments.length; i++) {
+        var arg = arguments[i];
+        if (!arg) continue;
+
+        var argType = typeof arg;
+
+        if (argType === 'string' || argType === 'number') {
+            classes.push(arg);
+        } else if (Array.isArray(arg) && arg.length) {
+            var inner = classNames.apply(null, arg);
+            if (inner) {
+                classes.push(inner);
+            }
+        } else if (argType === 'object') {
+            for (var key in arg) {
+                if (hasOwn.call(arg, key) && arg[key]) {
+                    classes.push(key);
+                }
+            }
+        }
+    }
+
+    return classes.join(' ');
+}
+
 class RepositoryPage extends Component {
     static propTypes = {
         match: PropTypes.object.isRequired,
@@ -35,6 +65,7 @@ class RepositoryPage extends Component {
             labelField: "awdawd",
             mischecked: false,
             curBrId: -1,
+            isToggleOn: false,
             code: props.code ? props.code : '999',
             description: props.description ? props.description : 'Unknown error'
         }
@@ -44,6 +75,9 @@ class RepositoryPage extends Component {
         this.createBrHnld = this.createBrHnld.bind(this);
         this.mdownloadFile = this.mdownloadFile.bind(this);
         this.mdownloadAllCommit = this.mdownloadAllCommit.bind(this);
+        this.renderSettingsBtn = this.renderSettingsBtn.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+
         // console.log(this.props)
     }
 
@@ -282,10 +316,25 @@ class RepositoryPage extends Component {
             });
     }
 
+    renderSettingsBtn() {
+        if(!this.state.repo.hasOwnProperty('owner')){
+            return <img className="mimg" onClick={this.handleClick.bind(null, !this.state.isToggleOn)} src="http://habrastorage.org/files/7cd/799/944/7cd79994458f4fc6a9345aa7444650a3.png" />;
+
+        }
+    }
+
+    handleClick(isActive) {
+        this.setState({ isToggleOn: isActive });
+    }
+
     render() {
         const {code, description} = this.state;
         const {repo, dropdownOpen, currentBranch,
             currentCommit, items, frmcrbr} = this.state;
+
+        let className = classNames('wrapper', {
+            'wrapper--open': this.state.isToggleOn
+        });
         return (
             <div>
                 <AuthElement />
@@ -293,84 +342,122 @@ class RepositoryPage extends Component {
 
                 <div className='page-wrap d-flex flex-row align-items-center pt-5'>
                     <div className='container'>
-                            <h2>Репозиторий: {repo.name}</h2>
+                        <div className="r-div-repo-name">
+                            <h2>Репозиторий: {repo.name}</h2> {this.renderSettingsBtn()}
+                        </div>
+                        <div className='row justify-content-center'>
+                            <br/>
+                            <div className='col-md-12 text-center'>
+                                <div className={className}>
+                                    <div className="menu">
+                                        <h3>Настройки</h3>
+                                        <div className="item">
+                                            Добавить коллаборатора
+                                                <TextField
+                                                    variant="outlined"
+                                                    margin="normal"
+                                                    required
+                                                    fullWidth
+                                                    id="name"
+                                                    label="Введите email"
+                                                    name="_co_email"
+                                                    onChange={event => {
+                                                        this.setState({
+                                                            coemail: event.target.value
+                                                        });
+                                                    }}
+                                                    autoFocus
+                                                />
+
+                                                <button type="submit" className="btn"
+                                                        onClick={this.createBrHnld}
+                                                >Добавить</button>
+                                        </div>
+                                        {/*<div className="item">Item 2</div>*/}
+                                        {/*<div className="item">Item 3</div>*/}
+                                        {/*<div className="item">Item 4</div>*/}
+                                        {/*<div className="item">Item 5</div>*/}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <div className='row justify-content-center'>
                                 <br/>
-                            <div className='col-md-12 text-center'>
-                                <div className="card">
-                                    {/*<h5 className="card-header">Featured</h5>*/}
-                                    <div className="mmcard">
-                                        <StyledHtmlSelect
-                                            defaultValue={this.state.currentBranch}
-                                            onChange={this.handlebranchchange } >
-                                            { this.renderBranches() }
-                                        </StyledHtmlSelect>
+                                <div className='col-md-12 text-center'>
+                                    <div className="card">
+                                        {/*<h5 className="card-header">Featured</h5>*/}
+                                        <div className="mmcard">
+                                            <StyledHtmlSelect
+                                                defaultValue={this.state.currentBranch}
+                                                onChange={this.handlebranchchange } >
+                                                { this.renderBranches() }
+                                            </StyledHtmlSelect>
 
-                                        <a href={"/repository/"+repo.id+"/" + currentBranch + "/commits"} className="commit-name">commit #{currentCommit}</a>
-                                    </div>
+                                            <a href={"/repository/"+repo.id+"/" + currentBranch + "/commits"} className="commit-name">commit #{currentCommit}</a>
+                                        </div>
 
-                                    <div id="myForm1" className={frmcrbr}>
-                                        <h5>Создание ветки</h5>
-                                        {/*<input type="text" value={this.state.value} placeholder="Введите ваше название" name="name" onChange={this.handleInputChange} required /> <br />*/}
-                                        <TextField
-                                            variant="outlined"
-                                            margin="normal"
-                                            required
-                                            fullWidth
-                                            id="name"
-                                            label="Введите название ветки"
-                                            name="_br_name"
-                                            onChange={event => {
-                                                this.setState({
-                                                    nbranch: event.target.value
-                                                });
-                                            }}
-                                            autoFocus
-                                        />
+                                        <div id="myForm1" className={frmcrbr}>
+                                            <h5>Создание ветки</h5>
+                                            {/*<input type="text" value={this.state.value} placeholder="Введите ваше название" name="name" onChange={this.handleInputChange} required /> <br />*/}
+                                            <TextField
+                                                variant="outlined"
+                                                margin="normal"
+                                                required
+                                                fullWidth
+                                                id="name"
+                                                label="Введите название ветки"
+                                                name="_br_name"
+                                                onChange={event => {
+                                                    this.setState({
+                                                        nbranch: event.target.value
+                                                    });
+                                                }}
+                                                autoFocus
+                                            />
 
-                                        <button type="submit" className="btn"
-                                                onClick={this.createBrHnld}
-                                        >Создать</button>
-                                    </div>
+                                            <button type="submit" className="btn"
+                                                    onClick={this.createBrHnld}
+                                            >Создать</button>
+                                        </div>
 
 
-                                    <div className="card-body mcd">
-                                        {this.renderFiles()}
+                                        <div className="card-body mcd">
+                                            {this.renderFiles()}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div className="mcurdiv">
-                    <div id="ms-container" onClick={this.mdownloadAllCommit}>
-                        <label htmlFor="ms-download">
-                            <div className="ms-content">
-                                <h3 className="mh3">Скачать коммит</h3>
-                                <div className="ms-content-inside">
-                                    <input type="checkbox" id="ms-download"/>
-                                    <div className="ms-line-down-container">
-                                        <div className="ms-line-down"></div>
+                    <div className="mcurdiv">
+                        <div id="ms-container" onClick={this.mdownloadAllCommit}>
+                            <label htmlFor="ms-download">
+                                <div className="ms-content">
+                                    <h3 className="mh3">Скачать коммит</h3>
+                                    <div className="ms-content-inside">
+                                        <input type="checkbox" id="ms-download"/>
+                                        <div className="ms-line-down-container">
+                                            <div className="ms-line-down"></div>
+                                        </div>
+                                        <div className="ms-line-point"></div>
                                     </div>
-                                    <div className="ms-line-point"></div>
                                 </div>
-                            </div>
-                        </label>
-                    </div>
-                    <a href={"/upload/"+this.state.curBrId+"/"+this.state.currentBranch+"/"}>
-                        <div id="ms-container">
-                            <h3 className="mh3">Загрузить файлы в ветку</h3>
-                            <svg cxmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                 className="bi bi-cloud-upload cursvg" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                      d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
-                                <path fill-rule="evenodd"
-                                      d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                            </svg>
+                            </label>
                         </div>
-                    </a>
-                </div>
+                        <a href={"/upload/"+this.state.curBrId+"/"+this.state.currentBranch+"/"}>
+                            <div id="ms-container">
+                                <h3 className="mh3">Загрузить файлы в ветку</h3>
+                                <svg cxmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     className="bi bi-cloud-upload cursvg" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                                    <path fill-rule="evenodd"
+                                          d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                                </svg>
+                            </div>
+                        </a>
+                    </div>
             </div>
         );
     }

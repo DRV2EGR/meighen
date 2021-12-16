@@ -190,6 +190,12 @@ public class RepositoryPrivateController {
     public ResponseEntity<?> getRepoInfo(@RequestParam Long repoId) {
         User u = getAuthentificatedUser();
 
+        Repository re = repositoryRepository.findById(repoId).orElseThrow(() -> {throw new NotFoundException("Not found");});
+        if (re.getCollaborators().contains(u)) {
+            return ResponseEntity.ok(
+                    classCastToDto.convertRepoToRepoCollabDto(re)
+            );
+        }
         return ResponseEntity.ok(
                 u.getRepositories().stream().filter(r -> r.getId() == repoId)
                         .map(repo -> classCastToDto.convertRepoToRepoDto(repo)).findFirst()
@@ -203,7 +209,7 @@ public class RepositoryPrivateController {
         List<Repository> clorep = repositoryRepository.findAllByCollaboratorsContains(u);
 
         return ResponseEntity.ok(
-                clorep.stream().map(rep -> classCastToDto.convertRepoToRepoDto(rep)).toArray()
+                clorep.stream().map(rep -> classCastToDto.convertRepoToRepoCollabDto((rep))).toArray()
         );
     }
     

@@ -11,6 +11,7 @@ class Repositories extends Component {
         super(props);
         this.state = {
             repositories: [],
+            corepositories: [],
             frmpp: "form-popup-none",
             name: "",
             code: props.code ? props.code : '999',
@@ -25,6 +26,16 @@ class Repositories extends Component {
 
     async getRepos(a) {
         return await fetch('/api/private/repos/repos_short', {
+            method: 'get',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + a,
+                'Content-Type': 'application/json'
+            }),
+        }).then(response => response.json());
+    }
+
+    async getCollabRepos(a) {
+        return await fetch('/api/private/repos/my_collab_repos', {
             method: 'get',
             headers: new Headers({
                 'Authorization': 'Bearer ' + a,
@@ -53,8 +64,10 @@ class Repositories extends Component {
 
         if (b) {
             const _repos = await this.getRepos(a);
-            console.log(_repos);
+            const _corepos = await this.getCollabRepos(a);
+            // console.log(_repos);
             this.setState({ repositories: [..._repos] });
+            this.setState({ corepositories: [..._corepos] });
 
             this.setState({loading: false});
         } else {
@@ -96,6 +109,40 @@ class Repositories extends Component {
         return repoList;
     }
 
+    renderCollabRepos() {
+        const repoList = [];
+
+        let k = 0;
+        try {
+            k = this.state.corepositories.length;
+        } catch (e) {
+            k = 0;
+        }
+
+        const cookies = new Cookies();
+        let b = cookies.get('username');
+
+        // Проход по листу квартир
+        for(let i = 0; i < k; i++) {
+            // let name = `${this.state.flats_p[i].name.first} ${this.state.flats_p[i].name.last}`;
+            let name = this.state.corepositories[i].name;
+            let id = this.state.corepositories[i].id;
+            let owner = this.state.corepositories[i].owner;
+
+            // console.log(name + " " + id)
+            repoList.push(
+                <div className='card-body'>
+                    <a href={'repository/'+id}  className='main-a'>
+                        <h3>{owner} / {name}</h3>
+                    </a>
+                </div>
+
+            );
+        }
+
+        return repoList;
+    }
+
     btnHndl() {
         if (this.state.frmpp == "form-popup-none") {
             this.setState({frmpp : "form-popup"});
@@ -125,7 +172,7 @@ class Repositories extends Component {
                 'Authorization': 'Bearer ' + a,
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify(body)
+                body: JSON.stringify(body)
         }).then(window.location = '/repositories');
     }
 
@@ -165,6 +212,20 @@ class Repositories extends Component {
                         <div className='flex-column justify-content-center repo-card'>
                             <div className="card">
                                 {this.renderRepos()}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div className='page-wrap d-flex flex-row align-items-center pt-5'>
+                    <div className='container'>
+                        <div className='my-row'>
+                            <h1>Совместные репозитории:</h1>
+                        </div>
+
+                        <div className='flex-column justify-content-center repo-card'>
+                            <div className="card">
+                                {this.renderCollabRepos()}
                             </div>
                         </div>
                     </div>
