@@ -77,6 +77,8 @@ class RepositoryPage extends Component {
         this.mdownloadAllCommit = this.mdownloadAllCommit.bind(this);
         this.renderSettingsBtn = this.renderSettingsBtn.bind(this);
         this.handleClick = this.handleClick.bind(this);
+        this.createClHnld = this.createClHnld.bind(this);
+
 
         // console.log(this.props)
     }
@@ -252,6 +254,19 @@ class RepositoryPage extends Component {
         }
     }
 
+    async createClHnld() {
+        const cookies = new Cookies();
+        let a = cookies.get('accessToken');
+
+        await fetch('/api/private/repos/add_collaborator?email='+this.state.coemail+'&repoId='+this.state.repo.id, {
+            method: 'post',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + a,
+                'Content-Type': 'application/json'
+            })
+        });
+    }
+
     async createBrHnld() {
         const cookies = new Cookies();
         let a = cookies.get('accessToken');
@@ -370,7 +385,7 @@ class RepositoryPage extends Component {
                                                 />
 
                                                 <button type="submit" className="btn"
-                                                        onClick={this.createBrHnld}
+                                                        onClick={this.createClHnld}
                                                 >Добавить</button>
                                         </div>
                                         {/*<div className="item">Item 2</div>*/}
