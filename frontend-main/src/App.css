@@ -36,3 +36,69 @@
     transform: rotate(360deg);
   }
 }
+
+.user-nav-img {
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+
+  margin-left: 30px;
+}
+
+.my-card {
+
+  background-color: rgba(200, 200, 200, 0.8);
+
+  padding: 15px;
+}
+
+.my-card:after {
+  background-color: grey;
+  content: '';
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  z-index: -1;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-child {
+  position: absolute;
+  display: none;
+  background-color: black;
+  border-radius: 10px;
+  min-width: 150px;
+
+  margin-right: 3px;
+  right: 20px;
+
+  z-index: 999;
+}
+.dropdown-child a {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-child a:hover {
+  color: white;
+  -webkit-text-shadow: 1px 1px 5px #9daccb;
+  -moz-text-shadow: 1px 1px 5px #9daccb;
+  -o-text-shadow: 1px 1px 5px #9daccb;
+  -ms-text-shadow: 1px 1px 5px #9daccb;
+  text-shadow: 1px 1px 5px #9daccb;
+}
+
+.dropdown:hover .dropdown-child {
+  display: block;
+}
+
+a {
+  text-decoration: none !important; /* Убирает подчеркивание для ссылок */
+}

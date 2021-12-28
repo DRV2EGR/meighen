@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    volumes:
+      - "./tmp-dir:/tmp"
     restart: always
     depends_on: 
       - db 
@@ -18,6 +20,10 @@ services:
       DB_NAME: postgres
       DB_USERNAME: $DB_USER
       DB_PASSWORD: $DB_PASSWORD
+    # networks: # Networks to join (Services on the same network can communicate with each other using their name)
+    #   - backend
+    #   - frontend
+    #   - db
 
   app-committer:
     build:
@@ -25,6 +31,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8082:8080"
+    volumes:
+      - "./tmp-dir:/tmp"
     restart: always
     depends_on: 
       - db 
@@ -43,7 +51,7 @@ services:
       context: frontend-main
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_BASE_URL: http://app-presenter:8080/api
+        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/
     ports:
       - "80:80"
     # volumes:
@@ -51,6 +59,8 @@ services:
     restart: always
     depends_on:
       - app-presenter
+    # networks:
+    #   - frontend  
 
   db:
     image: 'postgres:13.1-alpine'
@@ -63,6 +73,8 @@ services:
       - "5432:5432"
     volumes:
       - "./pgdata:/var/lib/postgresql/data"
+    # networks:
+    #   - db
     restart: always
 
   zookeeper:
@@ -102,3 +114,8 @@ services:
         - ./zk-single-kafka-single/kafka/data:/var/lib/kafka/data
       depends_on:
         - zookeeper
+# Networks to be created to facilitate communication between containers
+# networks:
+#   backend:
+#   frontend:
+#   db:

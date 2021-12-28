@@ -1,0 +1,44 @@
+.repo-card {
+    height: auto;
+    width: auto;
+    min-height: 50px;
+
+    border-radius: 20px;
+    color: aliceblue;
+    background-color: rgba(43, 51, 59, 0.38);
+}
+
+a {
+    color: #282c34;
+}
+
+h1 {
+    height: auto;
+    padding: 15px;
+    flex: 50%;
+}
+
+.my-row {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+
+.btn-my {
+    width: 50px;
+    height: 50px;
+
+    font-size: 2em;
+    text-align: center;
+}
+
+.form-popup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-popup-none {
+    display: none;
+}
